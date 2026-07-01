@@ -1,8 +1,35 @@
+# Virtual environments
 .venv/
+venv/
+env/
+
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+
+# Database files (contain research data)
 *.db
+
+# Secrets and environment files (NEVER commit real keys)
 .env
+.env.*
+!.env.example
+
+# Reports (may contain sensitive extracted data)
 reports/*.json
+reports/*.csv
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
