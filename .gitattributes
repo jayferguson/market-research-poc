@@ -1,0 +1,15 @@
+# Auto detect text files and normalize to LF
+* text=auto
+
+# Explicitly set for common text files
+*.md text
+*.txt text
+*.py text
+*.sh text eol=lf
+*.ps1 text eol=crlf
+
+# Binaries
+*.png binary
+*.jpg binary
+*.exe binary
+*.dll binary
