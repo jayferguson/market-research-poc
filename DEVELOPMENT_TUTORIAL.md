@@ -226,7 +226,7 @@ graph TD
     subgraph "v0.1-v0.2 (Mixed Content - Fragile Attribution)"
         A1[Broad scrape of main + searches] --> B1[One giant mixed text blob]
         B1 --> C1[LLM tries to guess which lines belong to which sub]
-        C1 --> D1["Mostly \"Main Company\" or wrong attribution"]
+        C1 --> D1["Mostly 'Main Company' or wrong attribution"]
     end
 
     subgraph "v0.3 (Per-Entity - Reliable Attribution)"
