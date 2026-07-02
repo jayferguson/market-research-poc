@@ -6,12 +6,7 @@
 
 This is a reflective tutorial based on an actual session, showing *how* to work with an AI like Grok effectively for PoCs, with concrete examples at every step.
 
-**Important note on diagrams**: The process flow diagrams use Mermaid syntax (```mermaid ... ```). 
-
-- On **GitHub**, view the file directly at https://github.com/jayferguson/market-research-poc/blob/main/DEVELOPMENT_TUTORIAL.md (Mermaid renders as interactive diagrams). Do **not** click "Raw".
-- In **VS Code**, install the "Mermaid Markdown Syntax Highlighting" extension (or similar).
-- For plain text editors or unsupported viewers, ASCII/text versions are provided right after each diagram block below.
-- You can also paste the Mermaid source at https://mermaid.live to render it.
+**Important note on diagrams**: The process flow diagrams are provided as plain text / ASCII art (in code blocks). They will always display correctly in any Markdown viewer or text editor as formatted diagrams. No special rendering support is required.
 
 ---
 
