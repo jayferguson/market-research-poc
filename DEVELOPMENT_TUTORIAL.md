@@ -139,8 +139,8 @@ Then copy the good parts (with clear "Adapted from..." comments).
 graph LR
     A[Exploration Results] --> B[Draft Plan with<br/>Files + Reuse + Verification]
     B --> C[Review Against User Constraints]
-    C --> D[Implementation (refer back to plan when scope creeps)]
-    D --> E[Verification (script + human check)]
+    C --> D["Implementation (refer back to plan when scope creeps)"]
+    D --> E["Verification (script + human check)"]
 ```
 
 **Text/ASCII version (for plain text viewers):**
@@ -226,13 +226,13 @@ graph TD
     subgraph "v0.1-v0.2 (Mixed Content - Fragile Attribution)"
         A1[Broad scrape of main + searches] --> B1[One giant mixed text blob]
         B1 --> C1[LLM tries to guess which lines belong to which sub]
-        C1 --> D1[Mostly "Main Company" or wrong attribution]
+        C1 --> D1["Mostly \"Main Company\" or wrong attribution"]
     end
 
     subgraph "v0.3 (Per-Entity - Reliable Attribution)"
         A2[Discover subs + their websites] --> B2[Loop over Main + each Sub]
-        B2 --> C2[Fetch pages FROM *this entity's own site* + entity-specific search]
-        C2 --> D2[Scoped LLM prompt: \"ONLY for this exact entity\"]
+        B2 --> C2["Fetch pages FROM this entity's own site + entity-specific search"]
+        C2 --> D2["Scoped LLM prompt: ONLY for this exact entity"]
         D2 --> E2[Correct subsidiary tag driven by source]
     end
 ```
@@ -319,7 +319,7 @@ The UI went through several user-driven iterations (with exact quotes):
 graph TD
     Buttons[Top: Research | Reload from DB | Clear Results] --> Layout[Two-Column Layout]
     Layout --> Left[Left Column<br/>Target + Clickable Subsidiaries List<br/>+ Settings Expander]
-    Layout --> Right[Right Column<br/>Product Lines (closed expanders)<br/>with correct Subsidiary + Link inside each<br/>+ Research Log at bottom]
+    Layout --> Right["Right Column<br/>Product Lines (closed expanders)<br/>with correct Subsidiary + Link inside each<br/>+ Research Log at bottom"]
 ```
 
 **Text/ASCII version (for plain text viewers):**
