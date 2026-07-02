@@ -132,6 +132,21 @@ See `verify_product_lines.py` and the plan.md in the Grok session for the approv
 
 These will reuse/extend the same storage, fetch, LLM, CLI/Streamlit skeleton.
 
+## Development Process Tutorial
+
+If you are new to building PoCs with AI assistance, read the full reflective tutorial:
+
+**`DEVELOPMENT_TUTORIAL.md`**
+
+It is written as a detailed tutorial with concrete examples of:
+- Exact prompts and code that evolved over time
+- Real user feedback messages that drove major changes (including the critical "all shown as Main Company" moment)
+- The per-entity extraction architecture that solved attribution
+- Step-by-step commands for git, verification, UI layout changes, secret audits, etc.
+- Lessons on using plan mode, sub-agents, and MCP tools effectively
+
+Highly recommended before you start your own AI-assisted PoC.
+
 ## Tech Notes
 
 - Brave Search (primary) + DuckDuckGo fallback for discovery.
