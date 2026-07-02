@@ -6,7 +6,7 @@
 
 This is a reflective tutorial based on an actual session, showing *how* to work with an AI like Grok effectively for PoCs, with concrete examples at every step.
 
-**Important note on diagrams**: The process flow diagrams are provided as plain text / ASCII art (in code blocks). They will always display correctly in any Markdown viewer or text editor as formatted diagrams. No special rendering support is required.
+**Important note on diagrams**: The process flow diagrams in this tutorial are written in Mermaid syntax (inside ```mermaid code blocks). They render on GitHub when you view the file on the web at the normal "blob" URL (https://github.com/jayferguson/market-research-poc/blob/main/DEVELOPMENT_TUTORIAL.md — do **not** use the Raw button). In VS Code, install the "Markdown Preview Mermaid Support" extension for instant preview. You can also copy/paste any diagram into https://mermaid.live to edit and export. The diagrams are also still readable as text in the raw source.
 
 ---
 
@@ -66,26 +66,14 @@ Build a *new standalone project* (`market-research-poc`) instead of forking Sale
 
 **Diagram: Exploration & Planning Flow**
 
-```
-Vague Request
-      |
-      v
-Plan Mode (Read-Only)
-      |
-      v
-Parallel Exploration (list_dir + grep + sub-agents)
-      |
-      v
-Identify Reusable Patterns (fetch.py, _extract_json, etc.)
-      |
-      v
-Decide: New standalone project vs Fork
-      |
-      v
-Write Detailed plan.md
-      |
-      v
-Start Coding
+```mermaid
+flowchart TD
+    A["Vague Request"] --> B["Plan Mode<br/>Read-Only"]
+    B --> C["Parallel Exploration<br/>list_dir + grep + sub-agents"]
+    C --> D["Identify Reusable Patterns<br/>fetch.py, _extract_json, etc."]
+    D --> E["Decide: New standalone project vs Fork"]
+    E --> F["Write Detailed plan.md"]
+    F --> G["Start Coding"]
 ```
 
 **Practical tip for you**:
@@ -118,8 +106,9 @@ Then copy the good parts (with clear "Adapted from..." comments).
 
 **Diagram: From Plan to Code**
 
-```
-Exploration Results --> Draft Plan --> Review Constraints --> Implementation --> Verification
+```mermaid
+flowchart LR
+    A["Exploration Results"] --> B["Draft Plan"] --> C["Review Constraints"] --> D["Implementation"] --> E["Verification"]
 ```
 
 **Practical tip**: After exploration, ask the AI to output a plan in a strict template (Context, Recommended Approach, Critical Files, Existing Code to Reuse with paths, Verification strategy). Then *make the AI re-read the plan.md* at the start of every major implementation turn.
@@ -194,39 +183,21 @@ The helper `extract_product_lines_for_entity` does:
 
 **Process Flow Diagram (Before vs After)**
 
-```
-v0.1-v0.2 (Mixed)                  v0.3 (Per-Entity)
------------------                  -----------------
-Broad mixed scrape   ===>          Discover subs + websites
-       |                                  |
-       v                                  v
-Mixed text blob                       For each entity:
-       |                           Fetch its own site + search
-       v                                  |
-LLM guesses attribution                   v
-       |                           Scoped prompt "ONLY for X"
-       v                                  |
-Mostly "Main Company"                 Correct attribution
-```
-
-**Text/ASCII version (for plain text viewers):**
-
-```
-v0.1-v0.2 (Mixed)                  v0.3 (Per-Entity)
------------------                  -----------------
-Broad mixed scrape   ===>          Discover subs + websites
-       |                                  |
-       v                                  v
-Mixed text blob                       For each entity:
-       |                           Fetch its own site + search
-       v                                  |
-LLM guesses attribution                   v
-       |                           Scoped prompt "ONLY for X"
-       v                                  |
-Mostly "Main Company"                 Correct attribution
-```
-
-```
+```mermaid
+flowchart LR
+    subgraph Old["v0.1-v0.2 (Mixed)"]
+        O1["Broad mixed scrape"] --> O2["Mixed text blob"]
+        O2 --> O3["LLM guesses attribution"]
+        O3 --> O4["Mostly 'Main Company'<br/>or wrong attribution"]
+    end
+    subgraph New["v0.3 (Per-Entity)"]
+        N1["Discover subs + websites"] --> N2["For each entity:<br/>Fetch its own site + search"]
+        N2 --> N3["Scoped prompt 'ONLY for X'"]
+        N3 --> N4["Correct attribution"]
+    end
+    style Old fill:#ffeeee,stroke:#cc0000
+    style New fill:#eeffee,stroke:#00aa00
+    Old -. evolution .-> New
 ```
 
 **Result**: Lines now correctly get attributed to the right subsidiary because the content came from that subsidiary's own pages and the prompt forced the scope.
@@ -251,8 +222,6 @@ Because the LLM might return a slightly different (but better) set of lines on d
 **CLI verification commands** (very useful during iteration):
 
 The command-line interface provided simple one-word subcommands such as "clean" (to wipe previous research data for the configured company), "research" (to run the full discovery and extraction process), and "show" (to display the currently stored subsidiaries and product lines with their sources). These commands were extremely handy for rapid testing and for reproducing exact issues the user reported.
-
-### CLI & UI - Real User Feedback Driving Changes
 
 ### CLI & UI — Real User Feedback Driving Changes
 
@@ -287,36 +256,16 @@ The UI went through several user-driven iterations (with exact quotes):
 
 **Diagram: Current UI Structure**
 
-```
-         Top Buttons (Research | Reload | Clear)
-                      |
-         +------------+------------+
-         |                         |
-      Left Column               Right Column
-  Target + Clickable         Product Lines
-  Subsidiaries List          (closed expanders
-  + Settings                 with sub links)
-         |                         |
-         +------------+------------+
-                      |
-              Research Log (bottom)
-```
-
-**Text/ASCII version (for plain text viewers):**
-
-```
-         Top Buttons (Research | Reload | Clear)
-                      |
-         +------------+------------+
-         |                         |
-      Left Column               Right Column
-  Target + Clickable         Product Lines
-  Subsidiaries List          (closed expanders
-  + Settings                 with sub links)
-         |                         |
-         +------------+------------+
-                      |
-              Research Log (bottom)
+```mermaid
+flowchart TD
+    Top["Top Buttons<br/>Research | Reload | Clear"]
+    subgraph Columns["Two Column Layout"]
+        direction LR
+        L["Left Column<br/>Target + Clickable<br/>Subsidiaries List<br/>+ Settings"]
+        R["Right Column<br/>Product Lines<br/>(closed expanders<br/>with sub links)"]
+    end
+    Top --> Columns
+    Columns --> Log["Research Log (bottom)"]
 ```
 
 ---
@@ -339,14 +288,12 @@ We would run the verification script, which produced a fresh timestamped report 
 
 **Diagram: The Actual Development Engine**
 
-```
-AI change --> Run verify script + manual human spot-check --> Give narrow, specific feedback --> AI change (loop)
-```
-
-**Text/ASCII version (for plain text viewers):**
-
-```
-AI change --> Run verify script + manual human spot-check --> Give narrow, specific feedback --> AI change (loop)
+```mermaid
+flowchart TD
+    A["AI change"] --> B["Run verify script<br/>+ manual human spot-check"]
+    B --> C["Give narrow, specific feedback"]
+    C --> D["AI change (loop)"]
+    D --> A
 ```
 
 **Tutorial takeaway**: When using LLMs, your verification loop must include both automated gates *and* cheap human judgment. The AI cannot be the only judge of correctness.
@@ -391,7 +338,7 @@ Your job is still to:
 
 ---
 
-## 9. Current State (v0.3) — What You Can Run Today
+## 9. Current State (v0.4) — What You Can Run Today
 
 The project supports:
 
