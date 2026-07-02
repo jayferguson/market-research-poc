@@ -71,18 +71,6 @@ Build a *new standalone project* (`market-research-poc`) instead of forking Sale
 
 **Diagram: Exploration & Planning Flow**
 
-```mermaid
-graph TD
-    A[Vague Request] --> B[Enter Plan Mode<br/>Read-Only]
-    B --> C[Parallel Exploration<br/>list_dir + grep + sub-agents]
-    C --> D[Identify Reusable Patterns<br/>fetch.py, _extract_json, verify scripts, ontology]
-    D --> E[Decide: New standalone project vs Fork]
-    E --> F[Write Detailed plan.md]
-    F --> G[Exit Plan Mode → Start Coding]
-```
-
-**Text/ASCII version (for plain text viewers or if Mermaid doesn't render):**
-
 ```
 Vague Request
       |
@@ -134,16 +122,6 @@ Then copy the good parts (with clear "Adapted from..." comments).
 **Lesson**: The plan acted as a contract. It prevented scope creep ("just add vertical markets now") and made the implementation and verification almost mechanical.
 
 **Diagram: From Plan to Code**
-
-```mermaid
-graph LR
-    A[Exploration Results] --> B[Draft Plan with<br/>Files + Reuse + Verification]
-    B --> C[Review Against User Constraints]
-    C --> D["Implementation (refer back to plan when scope creeps)"]
-    D --> E["Verification (script + human check)"]
-```
-
-**Text/ASCII version (for plain text viewers):**
 
 ```
 Exploration Results --> Draft Plan --> Review Constraints --> Implementation --> Verification
@@ -221,20 +199,19 @@ The helper `extract_product_lines_for_entity` does:
 
 **Process Flow Diagram (Before vs After)**
 
-```mermaid
-graph TD
-    subgraph "v0.1-v0.2 (Mixed Content - Fragile Attribution)"
-        A1[Broad scrape of main + searches] --> B1[One giant mixed text blob]
-        B1 --> C1[LLM tries to guess which lines belong to which sub]
-        C1 --> D1["Mostly 'Main Company' or wrong attribution"]
-    end
-
-    subgraph "v0.3 (Per-Entity - Reliable Attribution)"
-        A2[Discover subs + their websites] --> B2[Loop over Main + each Sub]
-        B2 --> C2["Fetch pages FROM this entity's own site + entity-specific search"]
-        C2 --> D2["Scoped LLM prompt: ONLY for this exact entity"]
-        D2 --> E2[Correct subsidiary tag driven by source]
-    end
+```
+v0.1-v0.2 (Mixed)                  v0.3 (Per-Entity)
+-----------------                  -----------------
+Broad mixed scrape   ===>          Discover subs + websites
+       |                                  |
+       v                                  v
+Mixed text blob                       For each entity:
+       |                           Fetch its own site + search
+       v                                  |
+LLM guesses attribution                   v
+       |                           Scoped prompt "ONLY for X"
+       v                                  |
+Mostly "Main Company"                 Correct attribution
 ```
 
 **Text/ASCII version (for plain text viewers):**
@@ -315,11 +292,19 @@ The UI went through several user-driven iterations (with exact quotes):
 
 **Diagram: Current UI Structure**
 
-```mermaid
-graph TD
-    Buttons[Top: Research | Reload from DB | Clear Results] --> Layout[Two-Column Layout]
-    Layout --> Left[Left Column<br/>Target + Clickable Subsidiaries List<br/>+ Settings Expander]
-    Layout --> Right["Right Column<br/>Product Lines (closed expanders)<br/>with correct Subsidiary + Link inside each<br/>+ Research Log at bottom"]
+```
+         Top Buttons (Research | Reload | Clear)
+                      |
+         +------------+------------+
+         |                         |
+      Left Column               Right Column
+  Target + Clickable         Product Lines
+  Subsidiaries List          (closed expanders
+  + Settings                 with sub links)
+         |                         |
+         +------------+------------+
+                      |
+              Research Log (bottom)
 ```
 
 **Text/ASCII version (for plain text viewers):**
@@ -359,11 +344,8 @@ We would run the verification script, which produced a fresh timestamped report 
 
 **Diagram: The Actual Development Engine**
 
-```mermaid
-graph LR
-    A[AI makes a change or prompt tweak] --> B[Run verify script + manual human spot-check]
-    B --> C[Give narrow, specific feedback]
-    C --> A
+```
+AI change --> Run verify script + manual human spot-check --> Give narrow, specific feedback --> AI change (loop)
 ```
 
 **Text/ASCII version (for plain text viewers):**
